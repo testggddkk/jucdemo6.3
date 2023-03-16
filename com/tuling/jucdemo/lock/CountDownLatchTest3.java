@@ -8,6 +8,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * 让单个线程等待：多个线程(任务)完成后，进行汇总合并
+ *
+ * 比如说darwin 给节点发升级包，是用多线程，所有线程都发完以后，再发通知节点升级指令。
  */
 public class CountDownLatchTest3 {
 
