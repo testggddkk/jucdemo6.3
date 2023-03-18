@@ -34,6 +34,26 @@ public class CyclicBarrierTest {
 
         }
 
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    System.out.println(Thread.currentThread().getName()
+                            + "开始等待其他线程");
+                    cyclicBarrier.await();
+                    System.out.println(Thread.currentThread().getName() + "开始执行");
+                    //TODO 模拟业务处理
+                    Thread.sleep(5000);
+                    System.out.println(Thread.currentThread().getName() + "执行完毕");
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+        System.out.println(123);
+
     }
 }
 

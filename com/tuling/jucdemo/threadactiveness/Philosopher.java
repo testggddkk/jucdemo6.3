@@ -42,6 +42,11 @@ public class Philosopher extends Thread {
             // 获得左手筷子
             synchronized (left) {
                 log.debug("获得左手筷子" + left.getNumber());
+                try {
+                    left.wait(300);
+                } catch (InterruptedException e) {
+                    System.out.println(123);
+                }
                 // 获得右手筷子
                 synchronized (right) {
                     log.debug("获得右手筷子" + right.getNumber());
