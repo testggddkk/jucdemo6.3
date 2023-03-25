@@ -2,6 +2,7 @@ package com.tuling.future;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.function.BiFunction;
 
 /**
  * @author Fox
@@ -19,6 +20,7 @@ public class CompletableFutureDemo2 {
 
                     System.out.println("T1:烧开水...");
                     sleep(15, TimeUnit.SECONDS);
+                    System.out.println("T1:水烧好了...");
                 });
         //任务2：洗茶壶->洗茶杯->拿茶叶
         CompletableFuture<String> f2 = CompletableFuture
@@ -31,14 +33,31 @@ public class CompletableFutureDemo2 {
 
                     System.out.println("T2:拿茶叶...");
                     sleep(1, TimeUnit.SECONDS);
+                    System.out.println("T2:拿到龙井茶叶...");
                     return "龙井";
                 });
         //任务3：任务1和任务2完成后执行：泡茶
-        CompletableFuture<String> f3 = f1.thenCombine(f2, (__, tf) -> {
-                    System.out.println("T1:拿到茶叶:" + tf);
-                    System.out.println("T1:泡茶...");
-                    return "上茶:" + tf;
-                });
+//        CompletableFuture<String> f3 = f1.thenCombine(f2, (__, tf) -> {
+//                    System.out.println("T1:拿到茶叶:" + tf);
+//                    System.out.println("T1:泡茶...");
+//                    return "上茶:" + tf;
+//                });
+
+ /*       CompletableFuture<Object> f3 = f2.thenCombine(f1, (s, unused) -> {
+            System.out.println(s);
+            return "上茶:" + s;
+        });
+*/
+
+        CompletableFuture<Object> f3 = f1.thenCombine(f2, new BiFunction<Void, String, Object>() {
+            @Override
+            public Object apply(Void unused, String s) {
+                System.out.println(s);
+                return "上茶:" + s;
+            }
+        });
+
+
         //等待任务3执行结果
         System.out.println(f3.join());
     }
